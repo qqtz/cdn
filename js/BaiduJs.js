@@ -353,8 +353,7 @@
 
 	
 	bg.config = {
-		url:"http://api.my9b.com/",//http://app.api28.com/
-		api:"http://jnd520.com/",
+		url:"http://api.jndapp.com/",
 		login:"http://api.pcjnd.com/"
 		
 	}
@@ -469,11 +468,7 @@
 	
 	//首次读取
 	bg.getContent = function(){
-		
-		/* if(bg.get("url") != ""){
-			bg.config['url'] = "http://api.28yc.cn/";
-		} */
-		
+			
 		$.ajax({
 		    
 			url:bg.config['login']+"demo/api",
@@ -606,7 +601,7 @@
 			
 			if(bg.mode['tdata'] == true){//
 				$.ajax({
-					url:bg.config['url']+"api.php?t="+bg.data28['type']+'mode',
+					url:bg.config['url']+"apix?token=FE06E1A0BAF35F7B&code="+bg.data28['type']+'mode'+"&rows=100&format=json",
 					type: "get",
 					success: function(idata) {
 						bg.mode['modeData'] = idata;
@@ -775,8 +770,7 @@
 		
 		bg.data28['type'] = type;
 		
-		app.request.get(bg.config['url']+"api.php",{t:type},
-		// app.request.get(bg.config['api']+"JND/jnd.php",{t:type},
+		app.request.get(bg.config['url']+"apix?token=FE06E1A0BAF35F7B&rows=100&format=json",{code:type},
 			function(data){
 				
 				bg.data28['data'] = data;
