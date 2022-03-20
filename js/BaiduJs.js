@@ -842,17 +842,17 @@
 		str += bg.lackStyle("双",data['shuang'],1);
 		str += bg.lackStyle("大",data['da'],0);
 		str += bg.lackStyle("小",data['xiao'],1);
-		str += bg.lackStyle("大单",data['dd'],0);
-		str += bg.lackStyle("大双",data['ds'],1);
-		str += bg.lackStyle("小单",data['xd'],0);
-		str += bg.lackStyle("小双",data['xs'],1);
-		str += bg.lackStyle("极大",data['jd'],0);
-		str += bg.lackStyle("极小",data['jx'],1);
-		str += bg.lackStyle("豹子",data['bao'],0);
-		str += bg.lackStyle("对子",data['dz'],1);
+		str += bg.lackStyle("大单",data['dadan'],0);
+		str += bg.lackStyle("大双",data['dashuang'],1);
+		str += bg.lackStyle("小单",data['xiaodan'],0);
+		str += bg.lackStyle("小双",data['xiaoshuang'],1);
+		str += bg.lackStyle("极大",data['jida'],0);
+		str += bg.lackStyle("极小",data['jixiao'],1);
+		str += bg.lackStyle("豹子",data['baozi'],0);
+		str += bg.lackStyle("对子",data['duizi'],1);
 		
 		for(i = 0;i<28;i++){
-			str += bg.lackStyle(i,data[i],i%2);
+			str += bg.lackStyle(i,data["t"+i],i%2);
 		}
 		$$("#lackData").html(str);
 	}
