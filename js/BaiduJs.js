@@ -213,46 +213,57 @@
 		  return c4;
 		});
 		
-		//充值记录
-		Template7.registerHelper('userRec', function (data){
+		//充值余额记录 //2022-3-25
+		Template7.registerHelper('moneylog', function (data){
 			
 			bg.s();
 
-			bg.getintRecord();
+			bg.getmoney();
 			
 			bg.h();
 			
-			data = bg.iuser['record'];
-			
-			
-			if(data.length == 0 || data == 0 ){
+			data1 = bg.iuser['money'];
+			data2 = data1.data.data;
+			console.log(data2);
+			if(data2.length == 0){
 				return '<div class="empty-content"><i class="icon iconfont icon-wujieguo1"></i> <div class="text"><span>暂无记录</span></div></div>';
 			}
-			console.log(data);
+			
 			var str = "";
 			
-			for(i = 0;i < data.length;i++){
+			for(i = 0;i < data2.length;i++){
 				
 				var dayStr = "";
-				if(data[i]['type'] == 1){
-					title = "雪币充值";
+				if(data2[i]['memo'] != null){
+					title = data2[i]['memo'];
 					afterClass = "c-r";
-				}else if(data[i]['type'] == 3){
-					title = "推荐获得";
-					afterClass = "c-b";
-				}else if(data[i]['type'] == 4){
-					title = "开通会员";
-					afterClass = "c-r";
-					dayStr = "天";
 				}
+				if(data2[i]['money'] > 0){
+					money = "+";
+				}else{
+					money = "";
+				}
+				// else if(data2[i]['type'] == 3){
+					// title = "推荐获得";
+					// afterClass = "c-b";
+				// }else if(data2[i]['type'] == 4){
+					// title = "开通会员";
+					// afterClass = "c-r";
+					// dayStr = "天";
+				// }
+				time = bg.date(data2[i]['createtime']);
 				
 				str += "<li>";
-		    	str += "<div class='item-content record-list'>";
+		    	str += "<div class='item-content moneylog-list'>";
 		        str += "<div class='item-inner'>";
 		        str += "  <div class='item-title'>" + title;
-		        str += "    <div class='item-footer'>"+data[i]['time']+"</div>";
+		        str += "    <div class='item-footer'>"+time+"</div>";
 		        str += "  </div>";
-		        str += "  <div class='item-after "+afterClass+"'>+"+data[i]['content']+dayStr+"</div>";
+				
+		        str += "  <div class='item-title "+afterClass+"'>"+money+data2[i]['money']+dayStr;
+				str += " <div class='item-footer'>"+"余额："+data2[i]['after']+"</div>";//当前余额
+				str += "  </div>";
+				
 		        str += "</div>";
 		     	str += "</div>";
 		    	str += "</li>";
@@ -263,30 +274,65 @@
 
 		});
 		
-		//文章数据
-		Template7.registerHelper('post', function (id){
+			//积分记录
+		Template7.registerHelper('ScoreLog', function (data){
 			
 			bg.s();
-			
-			var data = bg.getPostContent(id);
+
+			bg.ScoreLog();
 			
 			bg.h();
 			
-			data = data[0];
+			data1 = bg.iuser['ScoreLog'];
+			data2 = data1.data.data;
+			console.log(data2);
+			if(data2.length == 0){
+				return '<div class="empty-content"><i class="icon iconfont icon-wujieguo1"></i> <div class="text"><span>暂无记录</span></div></div>';
+			}
 			
-			var str = '<div class="post-head">';
-	  		str += '<h2>'+data['title']+'</h2>';
-	  		str += '<div class="post-author">';
-	  		str += '	<span class="rn-name">'+data['type']+'</span>';
-	  		str += '	<span class="rn-name">'+data['time'].substr(0,10)+'</span>';
-	  		str += '	<span class="rn-name">共'+data['browse']+'次浏览</span>';
-	  		str += '</div>';
-	  		str += '</div>';
-			str += '<div class="post-content">';
-			str += data['content'];
-			str += '</div>';
+			var str = "";
 			
-		    return str;
+			for(i = 0;i < data2.length;i++){
+				
+				var dayStr = "";
+				if(data2[i]['memo'] != null){
+					title = data2[i]['memo'];
+					afterClass = "c-r";
+				}
+				if(data2[i]['score'] > 0){
+					score = "+";
+				}else{
+					score = "";
+				}
+				// else if(data2[i]['type'] == 3){
+					// title = "推荐获得";
+					// afterClass = "c-b";
+				// }else if(data2[i]['type'] == 4){
+					// title = "开通会员";
+					// afterClass = "c-r";
+					// dayStr = "天";
+				// }
+				time = bg.date(data2[i]['createtime']);
+				
+				str += "<li>";
+		    	str += "<div class='item-content ScoreLog-list'>";
+		        str += "<div class='item-inner'>";
+		        str += "  <div class='item-title'>" + title;
+		        str += "    <div class='item-footer'>"+time+"</div>";
+		        str += "  </div>";
+				
+		        str += "  <div class='item-title "+afterClass+"'>"+score+data2[i]['score']+dayStr;
+				str += " <div class='item-footer'>"+"余额："+data2[i]['after']+"</div>";//当前余额
+				str += "  </div>";
+				
+		        str += "</div>";
+		     	str += "</div>";
+		    	str += "</li>";
+		    	
+			}
+
+			return str;
+
 		});
 
 		//结果页
