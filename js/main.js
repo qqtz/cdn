@@ -1,13 +1,8 @@
-/*
- * my9b for bigwhite9
- * 
- */
-
 var app = new Framework7({
   root: '#app',
-  name: 'OP28',
+  name: '雪球',
   theme: 'ios', 
-  id: 'com.opxs.op28',
+  id: 'com.Box.xueqiu',
   version:'3.0.1',
   panel: {
     swipe: 'left',
@@ -22,7 +17,7 @@ var app = new Framework7({
   data: function(){
   	
   },
-  routes: [
+ routes: [
     {
       path: '/actionSet/',
       componentUrl: 'view/actionSet.html',
@@ -56,8 +51,12 @@ var app = new Framework7({
       componentUrl: 'view/verUp.html',
     },
     {
-      path: '/record/',
-      componentUrl: 'view/userRecord.html',
+      path: '/moneylog/',
+      componentUrl: 'view/userMoney.html',
+    },
+	{
+      path: '/ScoreLog/',
+      componentUrl: 'view/userScoreLog.html',
     },
     {
       path: '/pk10/:mode',

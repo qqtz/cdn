@@ -7,8 +7,10 @@
 	
 	bg.iuser = {
 		login: false,
-		record:[],
+		money:[],
+		ScoreLog:[],
 		config:'',
+		token:'',
 		id:' 请登录 '
 	};
 	
@@ -233,7 +235,7 @@
 				
 				var dayStr = "";
 				if(data[i]['type'] == 1){
-					title = "加币充值";
+					title = "雪币充值";
 					afterClass = "c-r";
 				}else if(data[i]['type'] == 3){
 					title = "推荐获得";
@@ -292,7 +294,7 @@
 			
 			if(data == "feedback"){
 				var str = '<div class="title"><span>提交成功</span></div>';
-				str += '<div class="text"><span>如被采纳会奖励一定加币</span></div>';
+				str += '<div class="text"><span>如被采纳会奖励一定雪币</span></div>';
 			}
 
 			if(data == "rec"){
@@ -425,41 +427,60 @@
 	//消息通知
 	bg.plusMsg = function(){
 		
-		var options = {cover:false,title:"OP28开奖通知"};
+		var options = {cover:false,title:"暴雪28开奖通知"};
 		var now = bg.data28['data'][0];
 		var zuhe = bg.GetZh(now['c4']);
-		var str = "第"+now['issue']+"期 已开奖："+now['c1']+"+"+now['c2']+"+"+now['c3']+"="+now['c4']+""+zuhe+"\nOP28提示";
+		var str = "第"+now['issue']+"期 已开奖："+now['c1']+"+"+now['c2']+"+"+now['c3']+"="+now['c4']+""+zuhe+"\n暴雪28提示";
 		if(window.plus){
 			plus.push.createMessage( str, "LocalMSG", options);
 		}
 		
 	}
 	
-	//获取积分记录
-	bg.getintRecord = function(){
+	//获取余额记录
+	bg.getmoney = function(){
 //		app.request.post(bg.config['url']+"index.php?Api/getRecord",{id:bg.user['id']},
 //			function(data){
 //				bg.user['record'] = data;
 //			},
 //			function(){
-				bg.toast("获取积分数据失败",2000,"icon-delete");
+//				bg.toast("获取积分数据失败",2000,"icon-delete");
 //			}
 //		,"json"
 //		);
 		$.ajax({
-			url:bg.config['url']+"index.php?Api/getRecord",
+			url:bg.config['login']+"user/moneylog",
 			type: "post",
-			data:{id:bg.iuser['id']},
+			data:{token:bg.iuser['token']},
 			dataType: "json",
 			async:false,
 			success: function(data) {
-				bg.iuser['record'] = data;
+				bg.iuser['money'] = data;
 			},
 			error: function(){
-				bg.toast("获取积分数据失败",2000,"icon-delete");
+				bg.toast("获取余额记录失败",2000,"icon-delete");
 			}
 		});
 	}
+	
+		//获取积分记录
+	bg.ScoreLog = function(){
+		
+		$.ajax({
+			url:bg.config['login']+"user/ScoreLog",
+			type: "post",
+			data:{token:bg.iuser['token']},
+			dataType: "json",
+			async:false,
+			success: function(data) {
+				bg.iuser['ScoreLog'] = data;
+			},
+			error: function(){
+				bg.toast("获取积分记录失败",2000,"icon-delete");
+			}
+		});
+	}
+	
 	
 	bg.callback = function(data){
 		console.log(data);
@@ -965,9 +986,10 @@
 						bg.toast("登录成功");
 					}
 					bg.iuser['login'] = true;
-					// data = JSON.parse(data);
 					
-				vipinfo = data.data.vipInfo;
+					// data = JSON.parse(data);
+					bg.iuser['token'] = data.data.userinfo.token;  //添加token
+					vipinfo = data.data.vipInfo;
 
 					if(vipinfo != null){
 						
@@ -1021,7 +1043,7 @@
 
 				}else{
 					// data = JSON.parse(data);
-					bg.toast("错误:"+data.msg);
+					bg.toast(data.msg);
 				}
 				
 				if(mode ==3){
@@ -1057,7 +1079,7 @@
     } 
 	
 	bg.outLogin = function(){
-	  app.dialog.confirm('您确定要退出吗？','OP28提示', function () {
+	  app.dialog.confirm('您确定要退出吗？','暴雪28提示', function () {
 	  	app.tab.show("#view-data");
 	  	bg.iuser['login'] = false;
 	    bg.toast("已退出");

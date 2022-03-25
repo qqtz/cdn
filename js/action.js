@@ -77,7 +77,7 @@ $$('#_userLog').on('click', function () {
 	var pwd = $$("#_logpwd").val();
 	
 	if(user == "" || pwd == "" || user.length<6 || pwd.length < 6){
-		bg.toast("请填写完整数据");
+		bg.toast("请填写完整！");
 	}else{
 		bg.login(user,pwd);
 	}
@@ -94,26 +94,27 @@ $$('#sendMail').on('click', function () {
 		
 	}else{
 		
-		app.request.post(bg.config['url']+"index.php?Api/sendMail",{email:mail},
+		app.request.post(bg.config['login']+"ems/send",{email:mail},
 			function(data){
-				if(data.indexOf("true") != -1){
-					bg.toast("发送成功,请注意查收");
-					mailCode = data.substring(data.length-32,data.length);
-					
-					cTime = 30;
+				console.log(data);
+				if(data.code == 1){
+					bg.toast("发送成功,请注意查收！");
+					// mailCode = data.substring(data.length-32,data.length);
+					console.log(data);
+					cTime = 60;
 					$$("#sendMail").css("pointer-events","none");
 					$$("#sendMail").addClass("color-gray");
 					_check();
 
 				}else{
-					bg.toast("验证码发送失败");
+					bg.toast(data.msg);
 				}
 			
 			},
 			function(){
-				bg.toast("验证码发送失败");
+				bg.toast("发送错误，请联系客服！");
 			}
-			,"text"
+			,"json"
 		);
 		
 	}
@@ -138,8 +139,8 @@ function _check(){
 }
 
 $$("#buycard").on('click',function(){
-	window.location.href = "https://k.1ka123.com/item-VVRNzy.html";
-	//plus.runtime.openURL("https://k.1ka123.com/item-VVRNzy.html");
+	window.location.href = "http://pcjnd.com";
+	//plus.runtime.openURL("https://");
 });
 
 //注册账号
@@ -150,7 +151,7 @@ $$('#_reguser').on('click', function () {
 	var pwd = $$('#_password').val();
 	var pwd2 = $$('#_password2').val();
 	var qq = $$('#_qq').val();
-	var referee = $$('#_referee').val();
+	var referee = $$('#_referee').val(); //推荐id
 	var code = $$('#_yzcode').val();
 	
 	if(mailCode == ""){
@@ -171,28 +172,29 @@ $$('#_reguser').on('click', function () {
 	if(code == ""){
 		bg.toast("请填写验证码")
 		return ;
-	}else{
-		if(hex_md5(code) != mailCode){
-			bg.toast("请填写正确的验证码");
-			return ;
-		}
 	}
+	// else{
+		// if(hex_md5(code) != mailCode){
+			// bg.toast("请填写正确的验证码");
+			// return ;
+		// }
+	// }
 	
 	
-	app.request.post(bg.config['url']+"/index.php?Api/reguser",{email:mail,name:username,pwd:pwd,qq:qq,referee:referee},
+	app.request.post(bg.config['login']+"user/register2",{username:username,password:pwd,email:mail,qq:qq,invcode:referee,code:code},
 		function(data){
-			if(data == "注册成功"){
+			if(data.code == 1){
 				bg.toast("账号注册成功");
 				$$('#view-login').css('display','block');
 				$$('#view-reg').css('display','none');
 			}else{
-				bg.toast(data);
+				bg.toast(data.msg);
 			}
 		
 		},
 		function(){
-			bg.toast("发生错误");
-		},"text"
+			bg.toast("发生错误，请联系管理！");
+		},"json"
 	);
 	
 	
@@ -205,7 +207,7 @@ $$('#_viewuser').on('click', function (e) {
 });
 
 $$('#sz-help').on('click', function (e) {
-	app.dialog.alert('28免费提供一种模式杀组合预测，如要使用更多模式及模式统计请购买会员进行使用。<br/><br/>1314回本：杀小双遇到13回本 / 杀大单遇到14回本');
+	app.dialog.alert('暴雪28免费提供一种模式杀组合预测，如要使用更多模式及模式统计请购买会员进行使用。<br/><br/>1314回本：杀小双遇到13回本 / 杀大单遇到14回本');
 });
 
 $$('#sz-help2').on('click', function (e) {
