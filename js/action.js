@@ -26,6 +26,11 @@ $$('#_inv').on('click', function () {
 
 });
 
+$$('#_name').on('click', function () {
+		
+	bg.toast("暂未开放！");
+
+});
 
 
 //未登录提醒
@@ -77,7 +82,7 @@ $$('#_userLog').on('click', function () {
 	var pwd = $$("#_logpwd").val();
 	
 	if(user == "" || pwd == "" || user.length<6 || pwd.length < 6){
-		bg.toast("请填写完整！");
+		bg.toast("请填写正确账号密码！");
 	}else{
 		bg.login(user,pwd);
 	}
@@ -96,11 +101,11 @@ $$('#sendMail').on('click', function () {
 		
 		app.request.post(bg.config['login']+"ems/send",{email:mail},
 			function(data){
-				console.log(data);
+	
 				if(data.code == 1){
 					bg.toast("发送成功,请注意查收！");
-					// mailCode = data.substring(data.length-32,data.length);
-					console.log(data);
+					mailCode = data.code;
+	
 					cTime = 60;
 					$$("#sendMail").css("pointer-events","none");
 					$$("#sendMail").addClass("color-gray");
@@ -153,14 +158,18 @@ $$('#_reguser').on('click', function () {
 	var qq = $$('#_qq').val();
 	var referee = $$('#_referee').val(); //推荐id
 	var code = $$('#_yzcode').val();
-	
-	if(mailCode == ""){
+
+	if(mailCode == 0||mailCode == null){
 		bg.toast("请获取验证码");
 		return ;
 	}
 	
 	if(mail =="" || username == "" || pwd == "" || pwd2 == "" || qq == ""){
 		bg.toast("请填写完整再注册");
+		return ;
+	}
+	if(username.length<6){
+		bg.toast("请填写正确，用户名长度不能太短！");
 		return ;
 	}
 	
@@ -207,7 +216,7 @@ $$('#_viewuser').on('click', function (e) {
 });
 
 $$('#sz-help').on('click', function (e) {
-	app.dialog.alert('暴雪28免费提供一种模式杀组合预测，如要使用更多模式及模式统计请购买会员进行使用。<br/><br/>1314回本：杀小双遇到13回本 / 杀大单遇到14回本');
+	app.dialog.alert('雪球免费提供一种模式杀组合预测，如要使用更多模式及模式统计请购买会员进行使用。<br/><br/>1314回本：杀小双遇到13回本 / 杀大单遇到14回本');
 });
 
 $$('#sz-help2').on('click', function (e) {

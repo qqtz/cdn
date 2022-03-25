@@ -1058,17 +1058,19 @@
 						$$("#_vip").html("普通会员");
 						$$("#_vip").attr("class","user-type color-gray");
 					}
-					console.log(bg.iuser);
+					
 					// var ceshi = data.data.userinfo.avatar;
 					// // console.log(ceshi);
 					// avatar = Base64.decode(ceshi);
 					
 					// bg.setUser("avatar",avatar);
 					// console.log(avatar);
-					bg.userData(["avatar","id","nickname","username","email","qq","money","score","rectotal","exttotal"],data);
-					
+					bg.userData(["avatar","id","nickname","username","email","qq","money","score","rectotal","exttotal","invid",'createtime'],data);
 					
 					bg.viewData(["username","nickname","money","endDay","avatar"]);
+
+					console.log(bg.iuser);
+					console.log(data);
 					
 					app.loginScreen.close(".login-screen");
 					
@@ -1147,22 +1149,23 @@
 		if (bg.iLogin() == false) {
 			return ;
 		}
-		if(card.length < 15){
+		if(card.length < 7){
 			bg.toast("请输入正确的充值卡");
 		}else{
 			
-			app.request.post(bg.config['url']+"index.php?Api/rec",{id:bg.iuser['id'],card:card},
+			app.request.post(bg.config['login']+"user/vipcard",{uid:bg.iuser['id'],vipcard:card,token:bg.iuser['token']},
 				function(data){
-					if(data.indexOf("成功") != -1){
-						mineView.router.navigate("/result/rec/"+data);
+					console.log(data);
+					if(data.code == 1){
+						mineView.router.navigate("/result/rec/"+data.data);
 						return ;
 					}
-					bg.toast(data);
+					bg.toast(data.msg);
 				},
 				function(){
 					bg.toast("充值失败，请联系客服");
 				}
-			,"text"
+			,"json"
 			);
 			
 		}
@@ -2474,10 +2477,10 @@
 	}
 	
 	bg.szModeData = function(){
-		/* if(bg.iuser['isvip'] != "true"){
+		 if(bg.iuser['isvip'] != "true"){
 			bg.toast("该功能为VIP功能",2000,"icon-delete");
 			return ;
-		} */
+		} 
 		
 		if(bg.data28['dayCount'] < 5){
 			bg.toast("等待5期数据加载",2000,"icon-delete");
